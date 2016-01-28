@@ -16,7 +16,7 @@
 	<body>
 		<br>
 		<div>
-			<form id="commentForm" method="post" action="">
+			<form id="searchForm" method="post" action="">
 				<label>
 					<input id="term" type="search" placeholder="Search" style="width:90%; height:34px; background:#eee;">
 				</label>
@@ -31,23 +31,23 @@
 		<hr>
 		<br>
 		<div>
-			<table id="commentlist" style="width:100%;" border="1">
+			<table id="resultlist" style="width:100%;" border="1">
 				
 			</table>			 
 		</div>
 		<script>
 			CB.CloudApp.init('searchexp', 'xbEqb0LfoktTXag/29bpsg==');
 			var cs;	
-			$("#commentForm").submit(function() {
-				$("#commentlist").empty();
-				$("#commentlist").append("<tr><th class='title'>Title</th><th class='description'>Description</th></tr>");
+			$("#searchForm").submit(function() {
+				$("#resultlist").empty();
+				$("#resultlist").append("<tr><th class='title'>Title</th><th class='description'>Description</th></tr>");
 				cs = new CB.CloudSearch('Collection'); 
 				cs.searchQuery = new CB.SearchQuery(); 
 				cs.searchQuery.searchOn(['title', 'description'], $("#term").val()); 
 				cs.search({ 
 					success: function(list) {
 						for (i = 0; i < list.length; i++) { 
-							$("#commentlist").append("<tr><td class='title'><center>"+list[i].get('title')+"</center></td><td class='description'>"+list[i].get('description')+"</td></tr>");
+							$("#resultlist").append("<tr><td class='title'><center>"+list[i].get('title')+"</center></td><td class='description'>"+list[i].get('description')+"</td></tr>");
 						}
 					}, error: function(error) {
 						console.log(error);
