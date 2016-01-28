@@ -1,5 +1,6 @@
 # SampleSearchApp
-
+###Documentation
+[https://docs.cloudboost.io/#CloudSearch](https://docs.cloudboost.io/#CloudSearch)
 ###Data Set
 |Title|Description|
 ------|-----------|
