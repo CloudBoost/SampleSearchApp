@@ -1,41 +1,73 @@
 <html>
 	<head>
 		<title>Search App</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.24.3/css/uikit.min.css" />
 		<style>
 			.title{
-				width:30%;
-				padding:10px;
+				width:20%;
+				
 			}
 			.description{
-				width:70%;
-				padding:10px;
+				width:80%;
+				
 			}
 		</style>
 		<script src="https://cloudboost.io/js-sdk/cloudboost.min.js"></script>
 		<script src='http://code.jquery.com/jquery-1.11.2.js'></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.24.3/js/uikit.min.js"></script>
 	</head>
 	<body>
-		<br>
-		<div>
-			<form id="searchForm" method="post" action="">
-				<label>
-					<input id="term" type="search" placeholder="Search" style="width:90%; height:34px; background:#eee;">
-				</label>
-				<button type="submit" name="search" style="width:9%; height:34px;">Search</button>
-			</form>
-		</div>
-		<br>
-		<hr>
-		<div style="text-align:center;">
-			<strong>Search Result</strong>
-		</div>
-		<hr>
-		<br>
-		<div>
-			<table id="resultlist" style="width:100%;" border="1">
+		<div class="uk-grid" style="padding:10px;">
+			<div class="uk-width-1-3" style="border-right:medium solid #555;">
+				<br>
+				<article class="uk-article">
+	   				<h2>CloudSearch</h2>
+    				<span>CB.CloudSearch( tableName, [CB.SearchQuery], [CB.SearchFilter])</span>
+    				<h2>SearchQuery</h2>
+    				<span>SearchQuery.searchOn( columns, queryText, [fuzziness], [all_words], [match_percent], [priority] )</span>
+    				<dl class="uk-description-list-horizontal">
+						<dt>fuzziness</dt>
+						<dd>Can be set to 0, 1, 2. Default is 0. This parameter sets the fuzziness on search.</dd>
+						<dt>all words</dt>
+						<dd>Can take only value - true. If set the search will contain all the words in query. For example, If your search query is "Brown Fox". Results will contain both the words "Brown" AND "Fox".</dd>
+						<dt>match_percent</dt>
+						<dd>Can take only value - %. For ex : "75%". If set the search will return all the results which matches 75%.</dd>
+						<dt>priority</dt>
+						<dd>If set this query will have a higer priority over all other queries.</dd>
+					</dl>
+					<hr class="uk-article-divider">					
+					<a href="https://docs.cloudboost.io/#CloudSearch">Click here</a> for detail documentation of cloudsearch.
+    			</article>
+			</div>
+    		<div class="uk-width-2-3">
+    			<br>
+				<div>
+					<form id="searchForm" method="post" action="" class="uk-form">
+						<fieldset data-uk-margin>
+							<input id="term" type="search" placeholder="Query Text" style="width:40%;">
+							<input id="fuzziness" type="number" min="0" max="2" placeholder="Fuzziness">
+							<label><input id="all-words" type="checkbox">All Words</label>
+							<input id="match-percent" type="number" min="0" max="100" placeholder="Match in %">
+							<button type="submit" name="search" class="uk-button" style="width:9%;">Search</button>
+						</fieldset>
+					</form>
+					
+				</div>
+				<br>
+				<hr>
+				<div style="text-align:center;">
+					<strong>Search Result</strong>
+				</div>
+				<hr>
+				<br>
+				<div>
+					<table id="resultlist" style="width:100%;" class="uk-table uk-table-striped">
 				
-			</table>			 
+					</table>			 
+				</div>
+    		</div>
 		</div>
+		
 		<script>
 			CB.CloudApp.init('searchexp', 'xbEqb0LfoktTXag/29bpsg==');
 			var cs;	
@@ -44,11 +76,11 @@
 				$("#resultlist").append("<tr><th class='title'>Title</th><th class='description'>Description</th></tr>");
 				cs = new CB.CloudSearch('Collection'); 
 				cs.searchQuery = new CB.SearchQuery(); 
-				cs.searchQuery.searchOn(['title', 'description'], $("#term").val()); 
+				cs.searchQuery.searchOn(['title', 'description'], $("#term").val(), $("#fuzziness").val(), $("#all-words").val(), $("#match-percent").val()); 
 				cs.search({ 
 					success: function(list) {
 						for (i = 0; i < list.length; i++) { 
-							$("#resultlist").append("<tr><td class='title'><center>"+list[i].get('title')+"</center></td><td class='description'>"+list[i].get('description')+"</td></tr>");
+							$("#resultlist").append("<tr><td class='title'>"+list[i].get('title')+"</td><td class='description'>"+list[i].get('description')+"</td></tr>");
 						}
 					}, error: function(error) {
 						console.log(error);
